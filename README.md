@@ -18,7 +18,7 @@ Named route is only currently limited to Caddy API and not available for the Cad
     "app": {
         // define named routes
         "named_routes": {
-            // The name for the route
+            // the name for the route
             "<route name>": [
                 // ... list of http routes
             ]
@@ -80,11 +80,13 @@ http:
                                 X-API-Version: [v2]
                           handle:
                             - handler: reverse_proxy
-                              dial: [localhost:8080]
+                              upstreams:
+                                - dial: localhost:8080
                         # API legacy
                         - handle:
                             - handler: reverse_proxy
-                              dial: [localhost:8888]
+                              upstreams:
+                                - dial: localhost:8888
             # blog
             - handler: file_server
               root: /home/blog/static
@@ -97,7 +99,7 @@ This is still relatively readable thanks to the comments and the simple use case
 
 ### The Alternative
 
-Let us compose same YAML config with named routes.
+The following is a composition of same YAML config with named routes.
 
 ```yaml
 http:
@@ -138,12 +140,14 @@ named_routes:
           X-API-Version: [v2]
       handle:
         - handler: reverse_proxy
-          dial: [localhost:8080]
+          upstreams:
+            - dial: localhost:8080
 
   api.legacy:
     - handle:
         - handler: reverse_proxy
-          dial: [localhost:8888]
+          upstreams:
+            - dial: localhost:8888
 ```
 
 Even though the latter config is 10 lines longer, it looks cleaner and more readable.
